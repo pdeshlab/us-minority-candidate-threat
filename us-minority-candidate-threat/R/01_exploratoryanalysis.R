@@ -39,7 +39,7 @@ minority_dem <- data %>%
 minority_dem
 # 66% of minority mayoral candidates in Yamil's dataset are Dems
 # 15% have an unknowm partisanship (nonpartisan races?)
-# 18% are Republicans
+# 19% are Republicans
 
 minority_dem_black <- data %>%
   filter(race_final == "black") %>% # 985 rows
@@ -79,10 +79,18 @@ minorityvsminority_dem <- data %>%
   select(pid_final, frequency) %>%
   unique()
 
+# TODO: How many contests have at least one minority candidate?
+# minorityvsminority_dem_I <- data %>%
+#   group_by(fips_char, year, month) %>%
+#   summarize(minority_contest = )
+
 minorityvsminority_dem
-# 50% of minorities in minority v. minority races are Dem
+# 50% of minorities in minority v. white races are Dem
 # 25% are unknown
 # 25% are Republicans
+
+# TODO: filter to contests where there is at least one white candidate and one
+# POC candidate
 
 
 minorityvsminority_dem_only <- data %>%
@@ -110,6 +118,8 @@ minorityelec <- data %>%
   unique()
 
 minorityelec
+# TODO: Out of the races they actually contest in --- how often to they win?
+# Divide over the rows where there's one [GROUP] running
 
 # now let's limit it to races with only minority candidates
 minorityelec_only <- data %>%
@@ -126,3 +136,29 @@ minorityelec_only
 
 # For these two subpopulations, I want to figure out win rates conditional
 # on what the combination is (ex. latino vs. black --- who wins?)
+
+# Vote share for the strongest ethnic minority candidate minus the vote share
+# for the strongest white candidate
+
+# TODO:
+# - Merge data with turnout data (Voting Eligible Population), check with
+# state_fips_chars (MIT Election Lab?). Historical redistricting???
+# - First pass: use vote turnout from dataset
+# - Does voting for a minority candidate in election t, affect turnout in t+1?
+# District, Year, 
+# (Ethnic Margin -- The difference between the strongest minority candidate
+# and the white candidate),
+# Turnout (corresponds to t+1) 
+# Ethnic Margin: # votes/total votes (vote share). Take difference btween two
+# vote shares
+# Do analysis for districts who have elections every two years and those who
+# have four years.
+# What percentage of relevant contests happen every four years? two years?
+# dummy variable observing any effect of frequency of elections
+
+# Read: Rocio Titiunik Cambridge Elements Regression Discontinuity.
+# theory and how to apply their package. 
+# A Practical Introduction to Regression Discontinuity Designs
+
+# use tidycensus to figure out Voting Age Population by fips_char code
+# Avoid using number of registered people
