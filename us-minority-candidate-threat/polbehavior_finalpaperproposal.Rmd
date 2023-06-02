@@ -1,0 +1,94 @@
+---
+title: "Final Paper Proposal"
+author: "Pia Deshpande"
+date: '2023-03-09'
+output:
+  pdf_document:
+    number_sections: true
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Topline goals
+
+* I want to start working on a paper that is uniquely mine from start to finish. 
+* I'd hope that I would apply to the NSF with whichever project I develop. I'm also thinking of applying to the [Soros application for New Americans](https://www.pdsoros.org/apply/eligibility) --- a paper or paper proposal would be an optional exhibit. Both fellowships are due around the same time.
+
+## Reducing prejudice for all: the affective costs of narrative messaging around outgroups
+
+The title is too long! This project is something I've spoken to you about before. Here is the essential idea:
+
+We know that narratives are a more effective way to reduce prejudice than informational treatments about an outgroup. We are about to find out which narrative-conclusion explicitness pairs are most effective across four outgroups: Chinese Americans, Jewish Americans, undocumented immigrants from Mexico, and transgender Americans. 
+
+This project is exciting to me. If we found a narrative substantially reduced people's transphobia for example --- it would be good to partner with someone to develop a snazzier version of the treatment and implement it in a field setting. *However*, I worry that there are costs to reducing prejudice for an in-mind platonic ideal of an outgroup.
+
+Imagine that you are someone who is transphobic. You watch a video about a woman named Maya, who is trangender. In this condition she is sucessful, worked her way up from the bottom like any honest American, and has a husband and two beautiful children: a boy and a girl. She raises them in a way that feels familiar to you, and she's beautiful. You feel better about transgender people, specifically, you feel better about beautiful, sucessful, straight, child-rearing, gender-confirming transgender women. The experiment is a sucess!
+
+But then you meet someone who gives you attitude whiplash: she (they?) have a beard and don't shave their legs. They ask you to call them a woman but you don't feel great about that. They're not unkind, but they don't look like Rachel from _Friends_ and they rely on foodstamps to get by. This person is nothing like Maya. You don't like them one bit. You probably wouldn't have liked them at all before the video you saw about Maya, but now your dislike comes from some apriori prejudice and a new inconformability with expectations: you didn't sign up to endorse this kind of trans person.
+
+You can imagine this happening across other outgroups. You saw an ad telling you how difficult it was to be a Chinese American in the United States. Then you find out the job you were applying for was given to a Chinese American woman who seems to have had it all too easy here. What were you thinking? Chinese Americans clearly don't get discriminated against at all!
+
+This is troubling! How do we accurately gauge the affective costs to those at the margins of outgroups? From that: how do we gauge spillover effects from field studies that change people's attitudes about their _new, acceptable idea_ of an outgroup. We have successfully moved them from a negative stereotype map to a positive one --- but conditional on their new understanding of who the outgroup is, which can be restrictive.
+
+I think this kind of restrictive acceptability is how the model minority is constructed --- or at least a part of it.
+
+How do I begin to study this?
+
+* First, I'd want to test if my fears are justified, but I don't know how to do it ethically. **We could add some measures to our current survey experiment that try to measure this affective tradeoff?**
+
+  * If I conducted a survey experiment, perhaps I can be more relaxed about the longevity of whatever negative affects transpire. But I still worry about this.
+  * I could do some type of focus group experiment where I show subjects something they would likely already see --- a newsbroadcast about undocumented immigrants working under terrible conditions (widely syndicated, but maybe a couple of years old so people don't remember) --- then we could have a discussion about the outgroup represented and respondents' opinions. How do respondents feel about sucessful undocumented immigrants who have financial capital? If I ask them to describe what an "average" undocumented immigrant seemed like --- what would they say? How long would that conceptualization persist?
+
+* Second, I'd want to measure potential spillover of attitudes. If I canvass at one house, how likely is it that others at the neigborhood BBQ hear about it? Probably slight --- but it seems important to do some kind of check, especially if my well-intentioned intervention results in bigoted perceptions of the group at the margins.
+* Third, I'd want to measure enduring support for outgroup policy, but introduce different information for each outgroup.
+
+
+The below proposal will put me over the page count, but I would appreciate your thoughts on it! We can also talk about this during one of our meetings, so don't feel obliged.
+
+## The kid's aren't alright: the increasing connection between hostile sexism and authoritarian-right attitudes.
+
+This is the least well developed idea so I doubt it would be a project to work on in this class, but I wanted to float it by you in case it seems interesting and because I think it's important.
+
+I spoke about this idea to Matty and he seemed interested, so there is a potential this could be a two student co-authored project.
+
+I first became interested in this phenomena paying attention to my YouTube algorithm. I consume lefty political video essays on YT, so I get recommended some other-side inflammatory material. As you know, I have a morbid fascination with the Ben Shapiros and Jordan Petersons of the world --- and a common thread beyond all these darlings of the new intellectual right is their largely male fanbase. Peterson has gone from lamenting this to championing it. According to Peterson, Shapiro, Andrew Tate, and others: masculinity is in crisis in the United States.
+
+This isn't entirely untrue. Empirically, we know that young boys underperform academically compared to young girls from elementary school through college. Unmarried straight men have much worse life outcomes than unmarried straight women. Though rates of mental illness are similar across men and women, men kill themselves more often. 
+
+There's a lot going on here. What I'm most interested in is how gendered attitudes among young Republicans are changing. This is a difficult problem, and would mean measuring the following things:
+
+1. Some measure of hostile sexism.
+2. Some measures of their identification with their gender and how important it is to them. (My logic here is that leftist theory implies that if you are in the majority ---white, straight, male, cis --- one of the privileges of existing in that majority is that you don't think about it very often. I am not sure how true that is anymore)
+3. Some measure of requirements of being a man. These can be biological, but I'm aining for ingrained social norms (being a financial provider, being sexually desirable, etc.) It would also be interesting to see what men don't include. A lot of manosphere types (think Andrew Tate) promote hyper masculinity and sexual desirability without any emotional intimacy. In many ways, Tate is not socially conservative at all: marriage and family values guys would balk at his rhetoric, even if they think feminists are "loose women." There's something new happening here.
+3. Some measure of _how well_ they believe they are performing their gender based on the requirements they outlined above. How insecure are these men in their own man-ness?
+4. Some measure of willingness to commit political violence and interpersonal violence. When I think of the incel community this seems especially prescient.
+5. Some measure of linked fate with other men.
+6. Covariate measures like age, income, education, partisanship, voting behavior.
+
+I suppose in the ideal world I would run a panel study of high school seniors across the United States over multiple years.
+
+Once we establish some baseline understanding of gendered attitudes among these men, it would be good to understand who they are. Are they mostly white (most incel communities are ethnically diverse)? Do they come from a certain socioeconomic status (most are not wealthy from the investigative reporting I've read)?
+
+Then what? I have a couple of ideas.
+
+* In the same vein as our prejudice reduction: could I field some sort of narrative intervention to improve the gendered outlook that these kids have? How many interventions would I need to implement if I am assuming they will continue to engage with manosphere material until their sexist attiude reaches a kind of tipping point (they reach indifference or disagree with their former beliefs)?
+* Some analysis of YT algorithm suggestions (similar to Andy Guess' work) that through bot testing or some decision tree can show how frequently someone gets to a hate video. Imagine a kind of rando-clicker (always clicks on what's recommended) --- how soon until you get to really vile stuff? Does that time period shorten substantially if you're a young man?
+* Some descriptive analysis of how many men have these attitudes and if this has changed over time (even if men are more comfortable expressing these views now: this feels important).
+
+Concerns:
+
+* A _lot_ of incels specifically are struggling with mental illness. Some men with hostile sexism scores that are very high might become violent. How do I make sure that I am getting people help (notifying schools when I see scary survey responses?) and preventing them from doing harm?
+* The costs of backlash are high: if somehow my intervention makes subjects double down on their beliefs, this is a huge problem. Also, if any of this intervention gets out to the right-wing YT space --- they could easily weaponize it and undermine its effectiveness using group cues.
+* Spillover effects from any YT bot work or partnering with YT (Guess has a partnership with them now) --- what if I make things worse? 
+
+This is not a well-defined project, but I've grown more and more interested in how 1) the attitudes of young men (particularly young men who are economically disenfranchised) are shifting towards the right, and 2) how willing folks are on the left to dismiss this problem out of hand or call it "self-made." 
+
+It would be good to at least get the vague contours of:
+
+* Who are thought leaders in this sexist movement? (We are being broader than inceldom here.)
+* How do incubators like forums and YT accelerate this process? Can we use these tools to decelerate or put the breaks on this?
+* How can we use social or narrative interventions to improve these kids' outlooks on women?
+* How entrenched is this shift towards hostile sexism? When did it begin --- has it always been this bad?

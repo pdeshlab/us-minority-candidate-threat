@@ -1,0 +1,228 @@
+---
+title: "Pre-Analysis Plan: Minority Candidate Threat in the U.S. Mayoral Context"
+author: "Pia Deshpande and Stephanie Zonszein"
+date: '2023-03-09'
+output:
+  pdf_document:
+    number_sections: true
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+##### LIBRARY ####
+library(dplyr)
+library(here)
+library(ggplot2)
+library(tidyr)
+
+##### LOAD DATA ####
+data <- readRDS(here("Data/deshpande_zonszein_221202.rds"))
+
+```
+
+# Introduction
+$\color{magenta}{\text{NOTE: I have not written the introduction yet, but I can prioritize this once we talk through the rest of the PAP.}}$
+
+*NOTE for Pia: Change all t-1 time periods to t and all t to t+1. That is, make sure the election occurs at time t and you are measuring turnout in t+1.*
+
+
+
+# Research Design
+## Data, samples, outcomes, and treatment measures
+### Data
+
+We make use of the local elections dataset produced by [Warshaw, Benedictis-Kessner and Velez (2022)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4208183), specifically focusing on mayoral races. To estimate effects on turnout, we use ballot numbers provided in the local elections dataset and collect information on the voting age population in the relevant geographic area from the Census (using `tidycensus`). 
+
+$\color{magenta}{\text{NOTE: Should we use the 5-year ACS? How should we account for population change from time period to}}$
+$\color{magenta}{\text{time period when the Census' cadence is not yearly?}}$
+
+### Sample
+```{r citycount, echo = FALSE}
+
+# counting unique cities
+all_citycount <- 
+  data %>%
+  select(city) %>%
+  unique()
+
+# counting number of electoral contests
+all_contest <- 
+  data %>%
+  
+  # grouping by fips_char, year, and month to get 
+  # elections
+  group_by(fips_char, year, month) %>%
+  count()
+
+nrow(all_contest)
+```
+The dataset provided to us has 10718 observations --- or 10718 candidates who ran for mayor in the time period covered by the dataset. The earliest year in the dataset is `r min(data$year)` and the most recent is `r max(data$year)`. Below is a chart showing year to year coverage by city included in the dataset. There are `r nrow(all_citycount)` unique cities in this data.
+
+$\color{magenta}{\text{NOTE: Haven't figured out how to make the chart yet.}}$
+
+```{r chart, eval = FALSE}
+time <- 
+  data %>%
+  group_by(fips_char, year) %>%
+  count()
+
+# sum(is.na(time$month)) # there are 322 missing months
+# sum(is.na(time$year)) # there are 0 missing years
+# sum(is.na(time$fips_char)) # there are 9 missing fips
+
+time <- time %>%
+  mutate(covered = )
+
+# TODO: fipschar doesn't map onto city perfectly. When does this happen and why?
+
+ggplot(time, aes(x = year, y = n, group = fips_char)) +
+  geom_line() +
+  geom_point()
+  
+```
+
+There are `r nrow(all_contest)` unique electoral races in this dataset.
+
+However, we are only interested in a subset of the data provided to us. We want to examine contests in which there was at least one white candidate running for mayor and at least one non-white candidate. This means races where all candidates were white or all candidates were non-white are excluded from our analysis.
+
+```{r pruning}
+contestsofinterest <- data %>%
+   group_by(fips_char, year, month) %>%
+   mutate(I = case_when(
+     all(race_final == "caucasian") ~ 0,
+     all(race_final != "caucasian") ~ 0,
+     all(is.na(race_final)) ~ 0, # removing NAs
+     TRUE ~ 1
+   ))
+
+
+test_coi <- contestsofinterest %>%
+  select(fips_char, month, year, race_final, I, 
+         city, pid_final, winner) %>%
+  group_by(fips_char, month, year) %>%
+  
+  # keeping relevant contests
+  filter(I == 1)
+
+coi_count <- 
+  test_coi %>%
+  group_by(fips_char, month, year) %>%
+  count() # When I remove NAs, n >= 2
+
+coi_city <- test_coi %>%
+  group_by(city) %>%
+  count()
+
+nrow(coi_count)
+sum(coi_count$n)
+nrow(coi_city)
+
+```
+
+
+After this pruning, we have `r nrow(coi_count)` unique electoral races, `r nrow(coi_city)` cities, and `r sum(coi_count$n)` candidates. Below is a chart of time coverage.
+
+$\color{magenta}{\text{NOTE: Haven't figured out how to make the chart yet.}}$
+
+$\color{magenta}{\text{NOTE: Didn't know where to place analysis of partisanship.}}$
+
+```{r}
+prop.table(table(test_coi$pid_final))
+prop.table(table(test_coi$pid_final, test_coi$race_final),2)
+
+```
+Among these subset of relevant elections, only a portion will be in our treatment group. That is: minority candidates will win in only a subset of these contests.
+```{r winner}
+poc_winners <- test_coi %>%
+  group_by(fips_char, month, year) %>%
+  summarize(race_final, winner, pid_final) %>%
+  filter(winner == "win") %>%
+  filter(race_final != "caucasian")
+
+nrow(poc_winners)
+
+nrow(poc_winners)/nrow(coi_count)
+
+raceprop_win <- prop.table(table(poc_winners$pid_final, poc_winners$race_final),2)
+
+raceprop_win
+
+```
+#### Main analysis
+Our main analysis will examine the effect of treatment (a minority candidate winning a mayoral race in a particular city) in time t-1 on white turnout in time t. This means treatment is "assigned" at the city level, not the individual level.
+$\color{magenta}{\text{How do we deal with clustering?}}$
+
+We will operationalize a margin of victory which will subtract the percentage of ballots obtained by the strongest white candidate from the percentage of ballots obtained by the strongest nonwhite candidate. This means when margin of victory is positive, the white candidate has won. When margin of victory is negative, the POC candidate has won. The zero point will be the cutoff used in our RD design.
+
+#### Placebo tests
+* We conduct our main analysis, except we test for the effect of a minority candidate being elected mayor on turnout in t-2 (the time period before the election, t-1). $\color{magenta}{\text{Should we worry about anticipation?}}$
+* We conduct our main analysis, except we test for the effect of a minority candidate being elected mayor on turnout in t-3.
+* We conduct a permutation test in which we randomly assign some contests to be won by a minority candidate (regardless of whether this is actually true). We then simulate this permutation 10,000 times to create a null distribution. We should see the hypothetical effect converge to zero.
+
+#### Exploratory analysis
+* We are interested in studying threat experienced by certain minority groups when other, _different_ groups are elected into office.
+
+* Similarly, we are also interested in whether being elected fires minority voters up and turns them out to following elections. Does this effect only apply when a member of your ethnicity is elected? Is there some linked fate between your group and another group? $\color{magenta}{\text{NOTE: Should specify comparisons explicitly.}}$
+
+* Our main DV of interest is turnout among white voters. How long do turnout effects persist over time? 
+
+$\color{magenta}{\text{NOTE: Maybe move this section after Outcome variables?}}$
+
+$\color{magenta}{\text{NOTE: I've learned about synthetic partially pooled SCM in Erin's class for staggered policy adoption.}}$
+$\color{magenta}{\text{Could that be useful here?}}$
+
+### Outcome variables
+Our outcome variables are:
+
+* Turnout in the next mayoral election (time t). $\color{magenta}{\text{Can calculate ballots/vap with the Census}}$
+
+* Turnout in next mayoral election (time t) among white voters. $\color{magenta}{\text{Not exactly sure how to get this yet. Have been looking.}}$
+
+### Treatment variable
+Our treatment variable is the election of a minority candidate to mayoral office in time t-1. 
+
+### Predetermined covariates
+* Partisanship of the candidate (modeled as Republican, Democrat, and Other).
+
+$\color{magenta}{\text{How do we deal with unknown modeled PID?}}$
+
+$\color{magenta}{\text{Winning POC candidates are more D than POC candidates in the sample space.}}$
+
+* The population share that is an ethnic minority, high socioeconomic status, and population density (taken from the ACS).
+
+* We also control for a candidate's incumbency status.
+
+### Mechanisms and their variables
+* We measure demographic characteristics at the census tract level as given by the at-the-time relevant ACS. We anticipate that if there are very few white voters in a tract, their response to threat won't be to mobilize to vote (a game they will never win as the extreme population minority). Relatedly, if there are very few POC voters in a tract, we can expect the same non-response.
+$\color{magenta}{\text{Would love to talk more about this re: disaggregation and other mechanisms.}}$
+
+## Estimation method
+
+### Main estimation method: pooled RD
+Our RD design should account for worries about self-selection into treatment. The cities in which minorities are elected are likely different than those who don't elect minorities. This may confound estimates of turnout among whites. However, around the cutoff of the margin of victory --- electoral contests and their candidates should be extremely similar. This means being assigned a winning POC mayor or a winning white mayor can be thought of as as-if random. We will conduct tests to bolster this assumption.
+
+#### RD validity and falsification tests
+* Test that the available predetermined covariates are not discontinuous at the threshold using local linear regression within the MSE-optimal bandwidth. We will perform this test for: ACS demographic characterstics at the tract level.
+* Test that the density of the running variable is not discontinues at the threshold usinglocal polynomial density estimators, and the McCrary test.
+* Test that there are no discontinuities away from the margin of victory cutoff, using placebo cutoffs that incrementally increase the cutoff point (at zero) by 5 percentage points in both directions.
+* Test that the results are robust to the choice of bandwidth by choosing an MSE-optimalbandwidth, twice or half as big as the MSE-optimal, and a CER bandwidth, twice or half as big as the CER bandwidth.
+
+# Hypotheses
+* When a minority candidate is elected in t-1, white turnout will increase in t as a type of threat response.
+$\color{magenta}{\text{Not sure if we only expect this among White Republicans.}}$
+* This effect will be more pronounced in whiter cities. There, whites could effectively mobilize against the racialized threat.
+* When the minority candidate is a Republican, no threat response will be observed.
+
+# Adjusted p-values for multiple testing
+To correct for multiple hypothesis testing, we use a Bonferroni correction.
+
+$\color{magenta}{\text{NOTE: Should we use a Bonferroni correction or a false discovery rate?}}$
+
+# Note on statistical power
+$\color{magenta}{\text{How did you make Figure 1 in your PAP?}}$
+
+# References
+TBD, but definitely going to cite Yamil's dataset, your papers, and Titiunik's work.
+
